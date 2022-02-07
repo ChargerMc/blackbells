@@ -13,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 
+import '../providers/socket_provider.dart';
+
 class DashboardScreen extends ConsumerStatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
 
@@ -24,8 +26,16 @@ class DashboardScreen extends ConsumerStatefulWidget {
 class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   @override
   void initState() {
-    ref.read(pushNotificationProvider).initializeApp();
+    init();
     super.initState();
+  }
+
+  void init() async {
+    final socket = ref.read(socketProvider);
+    if (socket.serverStatus != ServerStatus.online) {
+      await socket.connect();
+    }
+    await ref.read(pushNotificationProvider).initializeApp();
   }
 
   @override

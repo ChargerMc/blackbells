@@ -7,6 +7,7 @@ import 'package:lottie/lottie.dart';
 
 import '../../providers/navigation_provider.dart';
 import '../../providers/push_notification_provider.dart';
+import '../../providers/socket_provider.dart';
 
 class DisabledUserScreen extends ConsumerStatefulWidget {
   const DisabledUserScreen({Key? key}) : super(key: key);
@@ -19,8 +20,16 @@ class DisabledUserScreen extends ConsumerStatefulWidget {
 class _DisabledUserScreenState extends ConsumerState<DisabledUserScreen> {
   @override
   void initState() {
-    ref.read(pushNotificationProvider).initializeApp();
+    init();
     super.initState();
+  }
+
+  void init() async {
+    final socket = ref.read(socketProvider);
+    if (socket.serverStatus != ServerStatus.online) {
+      await socket.connect();
+    }
+    await ref.read(pushNotificationProvider).initializeApp();
   }
 
   @override
