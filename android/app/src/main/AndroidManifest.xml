@@ -2,7 +2,7 @@
     package="ec.com.blackbells">
      <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="Blackbells"
+        android:label="BlackBells"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
     <meta-data
