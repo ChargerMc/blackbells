@@ -1,4 +1,3 @@
-import 'package:blackbells/providers/push_notification_provider.dart';
 import 'package:blackbells/providers/secure_storage_provider.dart';
 import 'package:blackbells/routes/routes.dart';
 import 'package:blackbells/theme/theme.dart';
@@ -11,7 +10,6 @@ import 'providers/navigation_provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SecureStorage.configurePrefs();
-  await PushNotificationProvider.initializeApp();
   String environment = const String.fromEnvironment(
     'ENV',
     defaultValue: Environment.dev,

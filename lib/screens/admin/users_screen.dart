@@ -14,10 +14,11 @@ class _UsersScreenState extends ConsumerState<UsersScreen> {
   @override
   Widget build(BuildContext context) {
     final backend = ref.watch(backendProvider);
+    final users = ref.watch(usersProvider).value;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Usuarios'),
+        title: Text('Usuarios (${users != null ? users.length : '0'})'),
       ),
       body: ref.watch(usersProvider).when(
             data: ((users) {

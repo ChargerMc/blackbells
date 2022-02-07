@@ -4,11 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // ignore: library_prefixes
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
-final socketProvider = Provider<SocketProvider>((_) => SocketProvider());
+final socketProvider = Provider<SocketService>((_) => SocketService());
 
 enum ServerStatus { online, offline, connecting }
 
-class SocketProvider {
+class SocketService {
   ServerStatus _serverStatus = ServerStatus.connecting;
   late IO.Socket _client;
 

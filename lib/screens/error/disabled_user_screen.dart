@@ -6,12 +6,25 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../providers/navigation_provider.dart';
+import '../../providers/push_notification_provider.dart';
 
-class DisabledUserScreen extends ConsumerWidget {
+class DisabledUserScreen extends ConsumerStatefulWidget {
   const DisabledUserScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _DisabledUserScreenState();
+}
+
+class _DisabledUserScreenState extends ConsumerState<DisabledUserScreen> {
+  @override
+  void initState() {
+    ref.read(pushNotificationProvider).initializeApp();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final _textTheme = Theme.of(context).textTheme;
     final user = ref.watch(userProvider);
     final backend = ref.watch(backendProvider);

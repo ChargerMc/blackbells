@@ -13,31 +13,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 
-class DashboardScreen extends StatefulWidget {
+class DashboardScreen extends ConsumerStatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
 
   @override
-  State<DashboardScreen> createState() => _DashboardScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _DashboardScreenState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen> {
+class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   @override
   void initState() {
-    PushNotificationProvider.requestPermissions();
+    ref.read(pushNotificationProvider).initializeApp();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return const _BuildDashboard();
-  }
-}
-
-class _BuildDashboard extends ConsumerWidget {
-  const _BuildDashboard({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
     final events = ref.watch(eventsProvider);
     final establishments = ref.watch(establishmentProvider);
 
