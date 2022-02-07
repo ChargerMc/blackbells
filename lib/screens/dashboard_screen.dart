@@ -157,6 +157,7 @@ class _BuildDashboard extends ConsumerWidget {
                                       fontSize: 18,
                                       color: Colors.white54,
                                     ),
+                                    textAlign: TextAlign.center,
                                   ),
                                 ),
                               ),
