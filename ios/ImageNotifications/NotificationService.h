@@ -6,6 +6,7 @@
 //
 
 #import <UserNotifications/UserNotifications.h>
+#import "FirebaseMessaging.h"
 
 @interface NotificationService : UNNotificationServiceExtension
 
