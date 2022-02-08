@@ -62,22 +62,41 @@ class Backend {
 
     try {
       await _dio.post('/users/', data: data);
+
       return true;
     } on DioError catch (e) {
-      SnackService.showBanner(
-        backgroundColor: Colors.redAccent,
-        content: e.response != null
-            ? e.response!.data['msg']
-            : 'No hay conexión con el servidor.',
-        actions: [
-          TextButton(
-              onPressed: () => SnackService.close(),
-              child: const Text('Cerrar'))
-        ],
-        onVisible: () async => await Future.delayed(const Duration(seconds: 3))
-            .whenComplete(() => SnackService.close()),
-      );
-      return false;
+      if (e.response != null) {
+        final errors = e.response!.data['errors'] as List;
+        for (var error in errors) {
+          SnackService.showBanner(
+            backgroundColor: Colors.redAccent,
+            content: error['msg'],
+            actions: [
+              TextButton(
+                  onPressed: () => SnackService.close(),
+                  child: const Text('Cerrar'))
+            ],
+            onVisible: () async =>
+                await Future.delayed(const Duration(seconds: 3))
+                    .whenComplete(() => SnackService.close()),
+          );
+        }
+        return false;
+      } else {
+        SnackService.showBanner(
+          backgroundColor: Colors.redAccent,
+          content: 'No hay conexión con el servidor.',
+          actions: [
+            TextButton(
+                onPressed: () => SnackService.close(),
+                child: const Text('Cerrar'))
+          ],
+          onVisible: () async =>
+              await Future.delayed(const Duration(seconds: 3))
+                  .whenComplete(() => SnackService.close()),
+        );
+        return false;
+      }
     }
   }
 
@@ -137,7 +156,7 @@ class Backend {
     }
   }
 
-  Future<bool> mofifyUser(User user, {bool delete = false}) async {
+  Future<bool> modifyUser(User user, {bool delete = false}) async {
     try {
       Response json;
 
@@ -148,6 +167,33 @@ class Backend {
       }
 
       if (json.statusCode != 200) return false;
+
+      return true;
+    } on DioError catch (e) {
+      SnackService.showBanner(
+        backgroundColor: Colors.redAccent,
+        content: '${e.response?.data['msg']}',
+        actions: [
+          TextButton(
+            onPressed: () => SnackService.close(),
+            child: const Text(
+              'Cerrar',
+            ),
+          )
+        ],
+        onVisible: () async => await Future.delayed(const Duration(seconds: 3))
+            .whenComplete(() => SnackService.close()),
+      );
+      return false;
+    }
+  }
+
+  Future<bool> modifyEvent(Event event, {bool? enroll}) async {
+    try {
+      await _dio.put(
+        '/events/${event.uid}/?${enroll != null ? 'enroll=$enroll' : ''}',
+        data: event.toJson(),
+      );
 
       return true;
     } on DioError catch (e) {
@@ -187,6 +233,8 @@ final eventsProvider = FutureProvider<List<Event>>((_) async {
 
     events = List<Event>.from(
         (json.data['events'] as List).map((e) => Event.fromJson(e)));
+
+    events.sort(((a, b) => b.start.compareTo(a.start)));
 
     return events;
   } on DioError catch (e) {

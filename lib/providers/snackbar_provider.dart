@@ -20,7 +20,7 @@ class SnackService {
         contentTextStyle: contentTextStyle,
         backgroundColor: backgroundColor,
         onVisible: onVisible,
-        content: (content is Widget) ? content : Text(content),
+        content: (content is Widget) ? content : Text(content.toString()),
         actions: actions,
       ),
     );

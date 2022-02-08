@@ -4,6 +4,7 @@ User userFromJson(String str) => User.fromJson(json.decode(str));
 
 class User {
   User({
+    required this.img,
     required this.enabled,
     required this.online,
     required this.phonenumber,
@@ -24,6 +25,7 @@ class User {
   final bool online;
   final String phonenumber;
   final String uid;
+  final String img;
 
   static User copyWith({
     String? name,
@@ -35,6 +37,7 @@ class User {
     bool? online,
     String? phonenumber,
     String? uid,
+    String? img,
   }) =>
       User(
         name: name ?? '',
@@ -46,6 +49,7 @@ class User {
         enabled: enabled ?? false,
         online: enabled ?? false,
         phonenumber: phonenumber ?? '',
+        img: img ?? '',
       );
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -57,6 +61,7 @@ class User {
         uid: json["uid"],
         enabled: json["enabled"],
         online: json["online"],
+        img: json["img"],
         phonenumber: json["phonenumber"].toString(),
       );
 
@@ -68,5 +73,41 @@ class User {
         "role": role,
         "enabled": enabled,
         "phonenumber": phonenumber,
+        "img": img,
+      };
+}
+
+class UserResumed {
+  UserResumed({
+    required this.id,
+    this.name,
+    required this.img,
+  });
+
+  final String id;
+  final String? name;
+  final String img;
+
+  UserResumed copyWith({
+    String? id,
+    String? name,
+    String? img,
+  }) =>
+      UserResumed(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        img: img ?? this.img,
+      );
+
+  factory UserResumed.fromJson(Map<String, dynamic> json) => UserResumed(
+        id: json["_id"],
+        name: json["name"],
+        img: json["img"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "_id": id,
+        "name": name,
+        "img": img,
       };
 }

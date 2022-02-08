@@ -149,6 +149,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
     if (type == Authtype.register) {
       final register = await backend.register(
           _email.text.trim(), _password.text.trim(), _phonenumber.text.trim());
+
       if (!register) {
         setState(() {
           isEnabled = true;

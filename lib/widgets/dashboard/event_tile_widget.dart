@@ -1,3 +1,4 @@
+import 'package:blackbells/helpers/rider.dart';
 import 'package:blackbells/models/event_model.dart';
 
 import 'package:blackbells/screens/event/event_details_screen.dart';
@@ -59,21 +60,19 @@ class EventTileWidget extends StatelessWidget {
                       style: _textTheme.headline5,
                       textScaleFactor: 1,
                     ),
-                    event.start != null
-                        ? Row(
-                            children: [
-                              CaptionWidget(
-                                text:
-                                    '${event.start!.day}/${event.start!.month}/${event.start!.year}',
-                                icon: Icons.calendar_today,
-                              ),
-                              CaptionWidget(
-                                text: _getRouteTime(),
-                                icon: Icons.two_wheeler,
-                              ),
-                            ],
-                          )
-                        : const SizedBox(),
+                    Row(
+                      children: [
+                        CaptionWidget(
+                          text:
+                              '${event.start.day}/${event.start.month}/${event.start.year}',
+                          icon: Icons.calendar_today,
+                        ),
+                        CaptionWidget(
+                          text: Rider.getRouteTime(event.start, event.end),
+                          icon: Icons.two_wheeler,
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -101,10 +100,5 @@ class EventTileWidget extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String _getRouteTime() {
-    final dif = event.end!.difference(event.start!);
-    return '${dif.inHours} horas';
   }
 }

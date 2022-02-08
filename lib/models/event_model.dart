@@ -1,4 +1,5 @@
 import 'package:blackbells/models/establishment_model.dart';
+import 'package:blackbells/models/user_model.dart';
 
 class Event {
   Event({
@@ -7,24 +8,26 @@ class Event {
     required this.desc,
     this.img,
     this.link,
-    this.start,
+    required this.start,
     this.end,
-    this.sponsors,
+    required this.sponsors,
     required this.uid,
+    required this.enrolled,
   });
 
-  final _UserEvent user;
+  final UserResumed user;
   final String name;
   final String desc;
   final String? img;
   final String? link;
-  final DateTime? start;
+  final DateTime start;
   final DateTime? end;
-  final List<Establishment>? sponsors;
+  final List<Establishment> sponsors;
   final String uid;
+  final List<UserResumed> enrolled;
 
   Event copyWith({
-    _UserEvent? user,
+    UserResumed? user,
     String? name,
     String? desc,
     String? img,
@@ -32,6 +35,7 @@ class Event {
     DateTime? start,
     DateTime? end,
     List<Establishment>? sponsors,
+    List<UserResumed>? enrrolled,
     String? uid,
   }) =>
       Event(
@@ -43,60 +47,34 @@ class Event {
         start: start ?? this.start,
         end: end ?? this.end,
         sponsors: sponsors ?? this.sponsors,
+        enrolled: enrolled,
         uid: uid ?? this.uid,
       );
 
   factory Event.fromJson(Map<String, dynamic> json) => Event(
-        user: _UserEvent.fromJson(json["user"]),
-        name: json["name"],
-        desc: json["desc"],
-        img: json["img"],
-        link: json["link"],
-        start: DateTime.tryParse(json["start"].toString()),
-        end: DateTime.tryParse(json["end"].toString()),
-        sponsors: List<Establishment>.from(json["sponsors"].map((x) => x)),
-        uid: json["uid"],
-      );
+      user: UserResumed.fromJson(json["user"]),
+      name: json["name"],
+      desc: json["desc"],
+      img: json["img"],
+      link: json["link"],
+      start: DateTime.parse(json["start"].toString()),
+      end: DateTime.tryParse(json["end"].toString()),
+      sponsors: List<Establishment>.from(
+          json["sponsors"].map((x) => Establishment.fromJson(x))),
+      uid: json["uid"],
+      enrolled: List<UserResumed>.from(
+          json["enrolled"].map((x) => UserResumed.fromJson(x))));
 
-  Map<String, dynamic> toJson() => {
-        "user": user.toJson(),
-        "name": name,
-        "desc": desc,
-        "img": img,
-        "link": link,
-        "start": start?.toIso8601String(),
-        "end": end?.toIso8601String(),
-        "sponsors": List<Establishment>.from(
-            sponsors != null ? sponsors!.map((x) => x) : []),
-        "uid": uid,
-      };
-}
-
-class _UserEvent {
-  _UserEvent({
-    required this.id,
-    required this.name,
-  });
-
-  final String id;
-  final String name;
-
-  _UserEvent copyWith({
-    String? id,
-    String? name,
-  }) =>
-      _UserEvent(
-        id: id ?? this.id,
-        name: name ?? this.name,
-      );
-
-  factory _UserEvent.fromJson(Map<String, dynamic> json) => _UserEvent(
-        id: json["_id"],
-        name: json["name"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "_id": id,
-        "name": name,
-      };
+  Map<String, dynamic> toJson() {
+    return {
+      "name": name,
+      "desc": desc,
+      "img": img,
+      "link": link,
+      "start": start.toIso8601String(),
+      "end": end?.toIso8601String(),
+      "sponsors": List<Establishment>.from(sponsors.map((x) => x)),
+      "enrolled": List<UserResumed>.from(enrolled.map((x) => x)),
+    };
+  }
 }

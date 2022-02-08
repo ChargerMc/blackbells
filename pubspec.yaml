@@ -45,6 +45,8 @@ dependencies:
   socket_io_client: ^2.0.0-beta.4-nullsafety.0
   lottie: ^1.2.1
   form_builder_validators: ^7.4.0
+  image_stack: ^2.1.0
+  url_launcher: ^6.0.18
 
 dev_dependencies:
   flutter_test:

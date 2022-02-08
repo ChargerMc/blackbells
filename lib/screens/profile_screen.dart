@@ -22,14 +22,17 @@ class ProfileScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          CustomButton(
-            child: const Text('Cerrar sesión'),
-            onPressed: () async => await backend.logout(),
-          ),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            CustomButton(
+              child: const Text('Cerrar sesión'),
+              onPressed: () async => await backend.logout(),
+            ),
+          ],
+        ),
       ),
     );
   }

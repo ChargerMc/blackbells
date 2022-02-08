@@ -46,7 +46,7 @@ class _UsersScreenState extends ConsumerState<UsersScreen> {
                       ),
                       direction: DismissDirection.endToStart,
                       onDismissed: (direction) async {
-                        await backend.mofifyUser(user, delete: true);
+                        await backend.modifyUser(user, delete: true);
                       },
                       child: ListTile(
                         leading: Icon(
@@ -62,7 +62,7 @@ class _UsersScreenState extends ConsumerState<UsersScreen> {
                             setState(() {
                               user.enabled = !user.enabled;
                             });
-                            final resp = await backend.mofifyUser(user);
+                            final resp = await backend.modifyUser(user);
 
                             if (!resp) {
                               setState(() {

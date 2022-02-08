@@ -8,24 +8,28 @@ class CustomButton extends StatelessWidget {
     this.child,
     this.padding = EdgeInsets.zero,
     this.isCancel = false,
+    this.backgroundColor = Colors.transparent,
+    this.foregroundColor = Colors.white70,
   }) : super(key: key);
 
   final void Function()? onPressed;
   final Widget? child;
   final EdgeInsetsGeometry padding;
   final bool isCancel;
+  final Color? backgroundColor;
+  final Color? foregroundColor;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
       padding: padding,
       child: ElevatedButton(
         style: ButtonStyle(
           elevation: MaterialStateProperty.all<double?>(isCancel ? 0.0 : null),
           backgroundColor: MaterialStateProperty.all<Color?>(
-              isCancel ? Colors.transparent : null),
+              isCancel ? backgroundColor : null),
           foregroundColor: MaterialStateProperty.all<Color?>(
-              isCancel ? Colors.white70 : null),
+              isCancel ? foregroundColor : null),
           textStyle: MaterialStateProperty.all<TextStyle>(
             GoogleFonts.roboto(
               fontSize: 18,
