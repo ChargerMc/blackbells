@@ -1,3 +1,4 @@
+import 'package:blackbells/providers/notification_provider.dart';
 import 'package:blackbells/providers/secure_storage_provider.dart';
 import 'package:blackbells/routes/routes.dart';
 import 'package:blackbells/theme/theme.dart';
@@ -15,6 +16,7 @@ void main() async {
     defaultValue: Environment.dev,
   );
   Environment().initConfig(environment);
+  NotificationService.init();
   runApp(const ProviderScope(child: MyApp()));
 }
 

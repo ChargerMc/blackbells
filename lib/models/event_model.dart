@@ -73,8 +73,6 @@ class Event {
       "link": link,
       "start": start.toIso8601String(),
       "end": end?.toIso8601String(),
-      "sponsors": List<Establishment>.from(sponsors.map((x) => x)),
-      "enrolled": List<UserResumed>.from(enrolled.map((x) => x)),
     };
   }
 }

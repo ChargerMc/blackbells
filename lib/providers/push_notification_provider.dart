@@ -1,12 +1,12 @@
 import 'dart:async';
 
+import 'package:blackbells/providers/notification_provider.dart';
 import 'package:blackbells/providers/snackbar_provider.dart';
 import 'package:blackbells/providers/socket_provider.dart';
 import 'package:blackbells/theme/theme.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final pushNotificationProvider =
@@ -21,48 +21,13 @@ class PushNotificationService {
   // static StreamController<String> _messageStream = StreamController.broadcast();
   // static Stream<String> get messageStream => _messageStream.stream;
 
-  static Future _onBackgroundHandler(RemoteMessage message) async {
-    // print('background handler: ${message.messageId}');
-    // _messageStream.add(message.notification.title);
-    // print('Post ID:');
-    // print(message.data['post_id'] + message.data['post_type']);
-  }
+  static Future _onBackgroundHandler(RemoteMessage message) async {}
 
   static Future _onMessageHandler(RemoteMessage message) async {
-    SnackService.showBanner(
-      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
-      leading: const CircleAvatar(
-        backgroundImage: CachedNetworkImageProvider(
-            'https://app.blackbells.com.ec/uploads/no-image.png'),
-        backgroundColor: blackbellsColor,
-      ),
-      backgroundColor: Colors.white,
-      contentTextStyle: const TextStyle(color: blackbellsColor),
-      content: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '${message.notification?.title}',
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 2),
-          Text('${message.notification?.body}'),
-        ],
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => SnackService.close(),
-          child: const Text(
-            'Cerrar',
-            style: TextStyle(
-              color: Colors.blueAccent,
-            ),
-          ),
-        ),
-      ],
+    NotificationService.showNotification(
+      title: message.notification!.title,
+      body: message.notification!.body,
     );
-    // print('_onMessageHandler: ${message.notification!.title}');
-    // _messageStream.add(message.notification.title);
   }
 
   static Future _onMessageOpenApp(RemoteMessage message) async {

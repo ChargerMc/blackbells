@@ -1,5 +1,6 @@
 import 'package:blackbells/models/event_model.dart';
 import 'package:blackbells/providers/backend_provider.dart';
+import 'package:blackbells/providers/notification_provider.dart';
 import 'package:blackbells/screens/image_view.dart';
 import 'package:blackbells/theme/theme.dart';
 import 'package:blackbells/widgets/custom_button.dart';
@@ -128,42 +129,52 @@ class _SubmitButton extends ConsumerStatefulWidget {
 
 bool isEnrolled = false;
 bool isSending = false;
-List<String> imgs = [];
+List<ImageProvider<Object>> imgs = [];
+Event? eventLoaded;
 
 class __SubmitButtonState extends ConsumerState<_SubmitButton> {
   @override
   void initState() {
+    eventLoaded = widget.event;
     isSending = false;
     isEnrolled = false;
-    for (var user in widget.event.enrolled) {
+    _refreshImgs();
+    super.initState();
+  }
+
+  void _refreshImgs() {
+    imgs.clear();
+    for (var user in eventLoaded!.enrolled) {
       if (ref.read(userProvider).uid == user.id) {
         isEnrolled = true;
       }
-      imgs.add(user.img);
+      if (user.img.contains('no-image')) {
+        imgs.insert(0, const AssetImage('assets/icon/icon_foreground.png'));
+      } else {
+        imgs.insert(0, NetworkImage(user.img));
+      }
     }
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final backend = ref.watch(backendProvider);
-    final event = widget.event;
+    final user = ref.watch(userProvider);
 
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: [
-          event.enrolled.isNotEmpty
-              ? ImageStack(
+          eventLoaded!.enrolled.isNotEmpty
+              ? ImageStack.providers(
+                  providers: imgs,
+                  showTotalCount: false,
                   imageCount: 3,
                   imageBorderColor: blackbellsColor,
                   imageBorderWidth: 4,
-                  imageRadius: 50,
-                  imageList: const [
-                    'https://app.blackbells.com.ec/uploads/no-image.png'
-                  ],
-                  totalCount: event.enrolled.length,
+                  imageRadius: 40,
+                  totalCount: eventLoaded!.enrolled.length,
                 )
               : const SizedBox(),
           const SizedBox(width: 8),
@@ -176,19 +187,43 @@ class __SubmitButtonState extends ConsumerState<_SubmitButton> {
               child: Text(!isEnrolled ? 'Inscribirme' : 'Desuscribirme'),
               onPressed: !isSending
                   ? () async {
-                      setState(() {
-                        isSending = true;
-                      });
-                      final resp =
-                          await backend.modifyEvent(event, enroll: !isEnrolled);
-                      if (resp) {
-                        isEnrolled = !isEnrolled;
-                        setState(() {});
-                        ref.refresh(eventsProvider);
+                      setState(() => isSending = true);
+
+                      try {
+                        final resp = await backend.modifyEvent(eventLoaded!,
+                            enroll: !isEnrolled);
+                        if (resp) {
+                          isEnrolled = !isEnrolled;
+                          setState(() {});
+
+                          if (isEnrolled) {
+                            eventLoaded!.enrolled.add(
+                              UserResumed(
+                                id: user.uid,
+                                img: user.img,
+                                name: user.name,
+                              ),
+                            );
+                          } else {
+                            eventLoaded!.enrolled.removeWhere(
+                                (element) => element.id == user.uid);
+                          }
+                          _refreshImgs();
+                          await NotificationService.showNotification(
+                            title: isEnrolled
+                                ? '¡Excelente rider! vamos a RODARRR!'
+                                : 'No hay problema nos vemos en la próxima',
+                            body: isEnrolled
+                                ? 'Te has inscrito al evento ${eventLoaded!.name}.'
+                                : 'Te has desuscrito del evento ${eventLoaded!.name}.',
+                          );
+
+                          ref.refresh(eventsProvider);
+                        }
+                        setState(() => isSending = false);
+                      } catch (e) {
+                        setState(() => isSending = false);
                       }
-                      setState(() {
-                        isSending = false;
-                      });
                     }
                   : null,
             ),

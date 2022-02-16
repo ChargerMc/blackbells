@@ -37,7 +37,7 @@ class Backend {
     } on DioError catch (e) {
       SnackService.showBanner(
         backgroundColor: Colors.redAccent,
-        content: e.response != null
+        content: e.response!.statusCode != 404
             ? e.response!.data['msg']
             : 'No hay conexión con el servidor.',
         actions: [
@@ -112,7 +112,7 @@ class Backend {
       read(userProvider.state).state = User.fromJson(json.data['user']);
       return Authenticated.logged;
     } on DioError catch (e) {
-      if (e.response != null) {
+      if (e.response!.statusCode != 404) {
         if (e.response!.statusCode == 400) {
           SnackService.showBanner(
             backgroundColor: Colors.amberAccent,
@@ -194,7 +194,6 @@ class Backend {
         '/events/${event.uid}/?${enroll != null ? 'enroll=$enroll' : ''}',
         data: event.toJson(),
       );
-
       return true;
     } on DioError catch (e) {
       SnackService.showBanner(

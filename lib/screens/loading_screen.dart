@@ -52,9 +52,9 @@ class _LoadingScreenState extends ConsumerState<LoadingScreen> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    return Container(
-      color: blackbellsColor,
-      child: Column(
+    return Scaffold(
+      backgroundColor: blackbellsColor,
+      body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(

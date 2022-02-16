@@ -26,10 +26,16 @@ class CustomButton extends StatelessWidget {
       child: ElevatedButton(
         style: ButtonStyle(
           elevation: MaterialStateProperty.all<double?>(isCancel ? 0.0 : null),
-          backgroundColor: MaterialStateProperty.all<Color?>(
-              isCancel ? backgroundColor : null),
-          foregroundColor: MaterialStateProperty.all<Color?>(
-              isCancel ? foregroundColor : null),
+          backgroundColor: MaterialStateProperty.all<Color?>(isCancel
+              ? onPressed != null
+                  ? backgroundColor
+                  : null
+              : null),
+          foregroundColor: MaterialStateProperty.all<Color?>(isCancel
+              ? onPressed != null
+                  ? foregroundColor
+                  : null
+              : null),
           textStyle: MaterialStateProperty.all<TextStyle>(
             GoogleFonts.roboto(
               fontSize: 18,

@@ -34,7 +34,7 @@ class EstablishmentTileWidget extends StatelessWidget {
           color: Colors.white10,
           borderRadius: BorderRadius.circular(18),
           image: DecorationImage(
-            image: CachedNetworkImageProvider(establishment.logo),
+            image: CachedNetworkImageProvider(establishment.img),
             fit: BoxFit.cover,
           ),
         ),
