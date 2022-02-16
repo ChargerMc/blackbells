@@ -5,6 +5,10 @@ class NavigationService {
 
   static void navigateTo(String routeName) =>
       navigatorKey.currentState!.pushNamed(routeName);
+  static void navigateToPage(Widget page) =>
+      navigatorKey.currentState!.push(MaterialPageRoute(
+        builder: (context) => page,
+      ));
 
   static void navigateToSlideLeft(Widget page) => navigatorKey.currentState!
       .push(navigateAnimationSlideLeft(navigatorKey.currentContext!, page));

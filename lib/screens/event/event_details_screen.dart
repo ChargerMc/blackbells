@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:blackbells/models/event_model.dart';
 import 'package:blackbells/providers/backend_provider.dart';
 import 'package:blackbells/providers/notification_provider.dart';
@@ -216,6 +218,7 @@ class __SubmitButtonState extends ConsumerState<_SubmitButton> {
                             body: isEnrolled
                                 ? 'Te has inscrito al evento ${eventLoaded!.name}.'
                                 : 'Te has desuscrito del evento ${eventLoaded!.name}.',
+                            payload: eventLoaded!.uid,
                           );
 
                           ref.refresh(eventsProvider);

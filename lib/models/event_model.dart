@@ -67,6 +67,7 @@ class Event {
 
   Map<String, dynamic> toJson() {
     return {
+      "user": user.toJson(),
       "name": name,
       "desc": desc,
       "img": img,
