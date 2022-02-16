@@ -1,8 +1,8 @@
-import 'dart:convert';
-
 import 'package:blackbells/models/event_model.dart';
 import 'package:blackbells/providers/backend_provider.dart';
-import 'package:blackbells/providers/notification_provider.dart';
+import 'package:blackbells/services/dialog_service.dart';
+import 'package:blackbells/services/navigation_service.dart';
+import 'package:blackbells/services/notification_service.dart';
 import 'package:blackbells/screens/image_view.dart';
 import 'package:blackbells/theme/theme.dart';
 import 'package:blackbells/widgets/custom_button.dart';
@@ -188,42 +188,61 @@ class __SubmitButtonState extends ConsumerState<_SubmitButton> {
               foregroundColor: isEnrolled ? Colors.white : null,
               child: Text(!isEnrolled ? 'Inscribirme' : 'Desuscribirme'),
               onPressed: !isSending
-                  ? () async {
+                  ? () {
                       setState(() => isSending = true);
-
                       try {
-                        final resp = await backend.modifyEvent(eventLoaded!,
-                            enroll: !isEnrolled);
-                        if (resp) {
-                          isEnrolled = !isEnrolled;
-                          setState(() {});
+                        DialogService.show(
+                          title: '¿Estás seguro/a rider?',
+                          content: !isEnrolled
+                              ? 'Vas a inscribirte a la rodada ${eventLoaded!.name}.'
+                              : 'Vas a desuscribirte a la rodada ${eventLoaded!.name}.',
+                          actions: [
+                            CustomButton(
+                              child: const Text('Confirmar'),
+                              onPressed: () => NavigationService.pop(true),
+                            ),
+                            CustomButton(
+                              child: const Text('Cancelar'),
+                              isCancel: true,
+                              onPressed: () => NavigationService.pop(false),
+                            ),
+                          ],
+                        ).then((value) async {
+                          if (value != null && value) {
+                            final resp = await backend.modifyEvent(eventLoaded!,
+                                enroll: !isEnrolled);
+                            if (resp) {
+                              isEnrolled = !isEnrolled;
 
-                          if (isEnrolled) {
-                            eventLoaded!.enrolled.add(
-                              UserResumed(
-                                id: user.uid,
-                                img: user.img,
-                                name: user.name,
-                              ),
-                            );
-                          } else {
-                            eventLoaded!.enrolled.removeWhere(
-                                (element) => element.id == user.uid);
+                              if (isEnrolled) {
+                                eventLoaded!.enrolled.add(
+                                  UserResumed(
+                                    id: user.uid,
+                                    img: user.img,
+                                    name: user.name,
+                                  ),
+                                );
+                              } else {
+                                eventLoaded!.enrolled.removeWhere(
+                                    (element) => element.id == user.uid);
+                              }
+                              _refreshImgs();
+                              await NotificationService.showNotification(
+                                title: isEnrolled
+                                    ? '¡Excelente rider! vamos a RODARRR!'
+                                    : 'No hay problema nos vemos en la próxima',
+                                body: isEnrolled
+                                    ? 'Te has inscrito al evento ${eventLoaded!.name}.'
+                                    : 'Te has desuscrito del evento ${eventLoaded!.name}.',
+                                payload: eventLoaded!.uid,
+                              );
+
+                              ref.refresh(eventsProvider);
+                            }
                           }
-                          _refreshImgs();
-                          await NotificationService.showNotification(
-                            title: isEnrolled
-                                ? '¡Excelente rider! vamos a RODARRR!'
-                                : 'No hay problema nos vemos en la próxima',
-                            body: isEnrolled
-                                ? 'Te has inscrito al evento ${eventLoaded!.name}.'
-                                : 'Te has desuscrito del evento ${eventLoaded!.name}.',
-                            payload: eventLoaded!.uid,
-                          );
 
-                          ref.refresh(eventsProvider);
-                        }
-                        setState(() => isSending = false);
+                          setState(() => isSending = false);
+                        });
                       } catch (e) {
                         setState(() => isSending = false);
                       }

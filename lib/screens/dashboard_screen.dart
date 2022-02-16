@@ -1,6 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:blackbells/providers/backend_provider.dart';
-import 'package:blackbells/providers/navigation_provider.dart';
+import 'package:blackbells/services/navigation_service.dart';
 import 'package:blackbells/providers/push_notification_provider.dart';
 import 'package:blackbells/routes/routes.dart';
 import 'package:blackbells/screens/profile_screen.dart';

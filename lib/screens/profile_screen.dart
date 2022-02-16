@@ -1,4 +1,6 @@
 import 'package:blackbells/providers/backend_provider.dart';
+import 'package:blackbells/services/dialog_service.dart';
+import 'package:blackbells/services/navigation_service.dart';
 import 'package:blackbells/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -29,7 +31,24 @@ class ProfileScreen extends ConsumerWidget {
           children: [
             CustomButton(
               child: const Text('Cerrar sesión'),
-              onPressed: () async => await backend.logout(),
+              onPressed: () => DialogService.show(
+                title: '¿Cerrar sesión?',
+                actions: [
+                  CustomButton(
+                    child: const Text('Confirmar'),
+                    onPressed: () => NavigationService.pop(true),
+                  ),
+                  CustomButton(
+                    isCancel: true,
+                    child: const Text('Cancelar'),
+                    onPressed: () => NavigationService.pop(false),
+                  ),
+                ],
+              ).then(
+                (value) async => (value != null && value == true)
+                    ? await backend.logout()
+                    : null,
+              ),
             ),
           ],
         ),

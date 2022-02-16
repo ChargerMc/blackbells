@@ -1,6 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:blackbells/providers/backend_provider.dart';
-import 'package:blackbells/providers/navigation_provider.dart';
+import 'package:blackbells/services/navigation_service.dart';
 import 'package:blackbells/providers/socket_provider.dart';
 import 'package:blackbells/screens/dashboard_screen.dart';
 import 'package:blackbells/screens/error/disabled_user_screen.dart';

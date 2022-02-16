@@ -1,9 +1,8 @@
-import 'package:blackbells/providers/navigation_provider.dart';
+import 'package:blackbells/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 
-final context = NavigationService.navigatorKey.currentState!.context;
-
 class SnackService {
+  static final _context = NavigationService.navigatorKey.currentContext!;
   static showBanner({
     void Function()? onVisible,
     required dynamic content,
@@ -13,7 +12,7 @@ class SnackService {
     Widget? leading,
     EdgeInsetsGeometry? padding,
   }) {
-    return ScaffoldMessenger.of(context).showMaterialBanner(
+    return ScaffoldMessenger.of(_context).showMaterialBanner(
       MaterialBanner(
         padding: padding,
         leading: leading,
@@ -27,6 +26,6 @@ class SnackService {
   }
 
   static void close() {
-    return ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+    return ScaffoldMessenger.of(_context).hideCurrentMaterialBanner();
   }
 }

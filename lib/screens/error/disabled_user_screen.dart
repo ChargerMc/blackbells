@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../providers/navigation_provider.dart';
+import '../../services/navigation_service.dart';
 import '../../providers/push_notification_provider.dart';
 import '../../providers/socket_provider.dart';
 

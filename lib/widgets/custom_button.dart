@@ -5,7 +5,7 @@ class CustomButton extends StatelessWidget {
   const CustomButton({
     Key? key,
     this.onPressed,
-    this.child,
+    required this.child,
     this.padding = EdgeInsets.zero,
     this.isCancel = false,
     this.backgroundColor = Colors.transparent,
@@ -13,7 +13,7 @@ class CustomButton extends StatelessWidget {
   }) : super(key: key);
 
   final void Function()? onPressed;
-  final Widget? child;
+  final Widget child;
   final EdgeInsetsGeometry padding;
   final bool isCancel;
   final Color? backgroundColor;

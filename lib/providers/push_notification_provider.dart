@@ -1,10 +1,7 @@
 import 'dart:async';
 
-import 'package:blackbells/providers/notification_provider.dart';
-import 'package:blackbells/providers/snackbar_provider.dart';
+import 'package:blackbells/services/notification_service.dart';
 import 'package:blackbells/providers/socket_provider.dart';
-import 'package:blackbells/theme/theme.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

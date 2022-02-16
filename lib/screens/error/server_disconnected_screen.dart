@@ -1,4 +1,4 @@
-import 'package:blackbells/providers/navigation_provider.dart';
+import 'package:blackbells/services/navigation_service.dart';
 import 'package:blackbells/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
