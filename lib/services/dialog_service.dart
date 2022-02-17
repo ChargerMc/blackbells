@@ -8,8 +8,10 @@ class DialogService {
     required String title,
     String? content,
     List<Widget>? actions,
+    bool isDismissible = true,
   }) async {
     return await showDialog(
+      barrierDismissible: isDismissible,
       context: _context,
       builder: (_context) => AlertDialog(
         shape:

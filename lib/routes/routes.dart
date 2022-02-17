@@ -1,4 +1,5 @@
 import 'package:blackbells/screens/admin/admin_screen.dart';
+import 'package:blackbells/screens/admin/notification_screen.dart';
 import 'package:blackbells/screens/admin/users_screen.dart';
 import 'package:blackbells/screens/auth_screen.dart';
 import 'package:blackbells/screens/dashboard_screen.dart';
@@ -13,6 +14,7 @@ class BlackbellsRoutes {
   static const String profile = 'profile';
   static const String admin = 'admin';
   static const String users = 'users';
+  static const String sendNotification = 'sendNotification';
 
   static final Map<String, Widget Function(BuildContext)> routes = {
     loading: (_) => const LoadingScreen(),
@@ -21,5 +23,6 @@ class BlackbellsRoutes {
     profile: (_) => const ProfileScreen(),
     admin: (_) => const AdminScreen(),
     users: (_) => const UsersScreen(),
+    sendNotification: (_) => const NotificationScreen(),
   };
 }

@@ -112,7 +112,7 @@ class Backend {
       read(userProvider.state).state = User.fromJson(json.data['user']);
       return Authenticated.logged;
     } on DioError catch (e) {
-      if (e.response!.statusCode != 404) {
+      if (e.response != null && e.response!.statusCode != 404) {
         if (e.response!.statusCode == 400) {
           SnackService.showBanner(
             backgroundColor: Colors.amberAccent,
@@ -156,6 +156,21 @@ class Backend {
     }
   }
 
+  Future<bool> sendPushNotification(String title, {String? body}) async {
+    try {
+      final json = await _dio.post('/notifications/notifications',
+          data: {'title': title, 'body': body});
+
+      if (json.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<bool> modifyUser(User user, {bool delete = false}) async {
     try {
       Response json;
@@ -172,7 +187,9 @@ class Backend {
     } on DioError catch (e) {
       SnackService.showBanner(
         backgroundColor: Colors.redAccent,
-        content: '${e.response?.data['msg']}',
+        content: e.response != null
+            ? '${e.response?.data['msg']}'
+            : 'Revisa tu conexión a internet.',
         actions: [
           TextButton(
             onPressed: () => SnackService.close(),
@@ -198,7 +215,9 @@ class Backend {
     } on DioError catch (e) {
       SnackService.showBanner(
         backgroundColor: Colors.redAccent,
-        content: '${e.response?.data['msg']}',
+        content: e.response != null
+            ? '${e.response?.data['msg']}'
+            : 'Revisa tu conexión a internet.',
         actions: [
           TextButton(
             onPressed: () => SnackService.close(),

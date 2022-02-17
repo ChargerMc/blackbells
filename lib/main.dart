@@ -3,6 +3,7 @@ import 'package:blackbells/providers/secure_storage_provider.dart';
 import 'package:blackbells/routes/routes.dart';
 import 'package:blackbells/theme/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'global/environment.dart';
@@ -13,10 +14,13 @@ void main() async {
   SecureStorage.configurePrefs();
   String environment = const String.fromEnvironment(
     'ENV',
-    defaultValue: Environment.dev,
+    defaultValue: Environment.prod,
   );
   Environment().initConfig(environment);
   NotificationService.init();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
   runApp(const ProviderScope(child: MyApp()));
 }
 

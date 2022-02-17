@@ -1,9 +1,13 @@
 import 'dart:async';
 
+import 'package:blackbells/services/dialog_service.dart';
+import 'package:blackbells/services/navigation_service.dart';
 import 'package:blackbells/services/notification_service.dart';
 import 'package:blackbells/providers/socket_provider.dart';
+import 'package:blackbells/widgets/custom_button.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final pushNotificationProvider =
@@ -28,8 +32,16 @@ class PushNotificationService {
   }
 
   static Future _onMessageOpenApp(RemoteMessage message) async {
-    // print('_onMessageOpenApp: ${message.notification!.title}');
-    // _messageStream.add(message.notification.title);
+    DialogService.show(
+        isDismissible: false,
+        title: message.notification!.title!,
+        content: message.notification!.body,
+        actions: [
+          CustomButton(
+            child: const Text('Aceptar'),
+            onPressed: () => NavigationService.pop(),
+          ),
+        ]);
   }
 
   Future initializeApp() async {
@@ -42,21 +54,22 @@ class PushNotificationService {
     FirebaseMessaging.onBackgroundMessage(_onBackgroundHandler);
     FirebaseMessaging.onMessage.listen(_onMessageHandler);
     FirebaseMessaging.onMessageOpenedApp.listen(_onMessageOpenApp);
-
     await Future.delayed(const Duration(seconds: 1));
+
     read(socketProvider).emit('update-notification-token', token);
     // Local Notifications
   }
 
   static Future<void> requestPermissions() async {
     NotificationSettings settings = await messaging.requestPermission(
-        alert: true,
-        announcement: false,
-        badge: true,
-        carPlay: false,
-        criticalAlert: false,
-        provisional: false,
-        sound: true);
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       messaging.subscribeToTopic('notifications');

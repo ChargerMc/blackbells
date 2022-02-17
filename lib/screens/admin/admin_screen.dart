@@ -22,6 +22,13 @@ class AdminScreen extends ConsumerWidget {
               trailing: const Icon(Icons.arrow_forward_ios_rounded),
               onTap: () => Navigator.pushNamed(context, BlackbellsRoutes.users),
             ),
+            ListTile(
+              leading: const Icon(Icons.notifications),
+              title: const Text('Enviar notificación'),
+              trailing: const Icon(Icons.arrow_forward_ios_rounded),
+              onTap: () => Navigator.pushNamed(
+                  context, BlackbellsRoutes.sendNotification),
+            ),
           ],
         ),
       ),

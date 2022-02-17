@@ -21,6 +21,7 @@ class CustomInput extends StatelessWidget {
     this.animate = true,
     this.delay = const Duration(milliseconds: 0),
     this.validator,
+    this.maxLines = 1,
   }) : super(key: key);
 
   final TextInputAction? textInputAction;
@@ -39,6 +40,7 @@ class CustomInput extends StatelessWidget {
   final bool animate;
   final Duration delay;
   final String? Function(String? text)? validator;
+  final int? maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +50,7 @@ class CustomInput extends StatelessWidget {
       child: Padding(
         padding: padding,
         child: TextFormField(
+          maxLines: maxLines,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: validator,
           textInputAction: textInputAction,
