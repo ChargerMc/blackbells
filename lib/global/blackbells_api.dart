@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:dio/dio.dart';
 
 import '../providers/secure_storage_provider.dart';
@@ -42,6 +44,19 @@ class BlackBellsApi {
   static Future<Response<dynamic>> dDelete(String path, {dynamic data}) async {
     try {
       final resp = await _dio.delete(path, data: data);
+      return resp;
+    } on DioError catch (_) {
+      rethrow;
+    }
+  }
+
+  static Future<Response<dynamic>> dUploadImage(
+      String path, Uint8List bytes) async {
+    final formData = FormData.fromMap({
+      'file': MultipartFile.fromBytes(bytes),
+    });
+    try {
+      final resp = await _dio.put(path, data: formData);
       return resp;
     } on DioError catch (_) {
       rethrow;

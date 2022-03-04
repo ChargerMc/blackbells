@@ -9,6 +9,7 @@ import 'package:blackbells/routes/routes.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 
 enum Authenticated { logged, invalid, error, waiting }
 
@@ -298,14 +299,16 @@ class Backend {
     }
   }
 
-  bool checkProfileCompleted() {
+  bool checkProfileCompleted({XFile? image}) {
     final user = read(userProvider);
 
     if (user.name.isEmpty) return false;
     if (user.bloodtype.isEmpty) return false;
     if (user.allergies.isEmpty) return false;
     if (user.motorcycle.isEmpty) return false;
-    if (user.img.isEmpty) return false;
+    if (user.cubiccapacity.isEmpty) return false;
+    if (user.color.isEmpty) return false;
+    if (user.img.isEmpty && image == null) return false;
     return true;
   }
 

@@ -82,7 +82,7 @@ class User {
         enabled: json["enabled"],
         online: json["online"],
         img: json["img"],
-        phonenumber: json["phonenumber"].toString(),
+        phonenumber: json["phonenumber"],
         allergies: json["allergies"],
         birthday: DateTime.parse(json["birthday"]),
         color: json["color"],

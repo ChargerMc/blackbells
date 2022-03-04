@@ -21,10 +21,10 @@ class DevConfig implements BaseConfig {
 
 class ProdConfig implements BaseConfig {
   @override
-  String get baseURL => "https://app.blackbells.com.ec/api";
+  String get baseURL => "https://blackbells.herokuapp.com/api";
 
   @override
-  String get socketURL => "https://app.blackbells.com.ec/";
+  String get socketURL => "https://blackbells.herokuapp.com/";
 }
 
 class Environment {

@@ -11,17 +11,15 @@ class ProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(userProvider);
     final backend = ref.watch(backendProvider);
 
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text(user.name),
+        title: const Text('Perfil'),
         actions: [
           IconButton(
-            onPressed: () => Navigator.pop(context),
-            icon: const Icon(Icons.close),
+            onPressed: () {},
+            icon: const Icon(Icons.edit_rounded),
           ),
         ],
       ),
@@ -30,7 +28,7 @@ class ProfileScreen extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const ProfileWidget(),
+            const EditProfileWidget(),
             CustomButton(
               isCancel: true,
               child: const Text('Cerrar sesión'),

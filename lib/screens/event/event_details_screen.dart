@@ -97,7 +97,7 @@ class EventDetails extends StatelessWidget {
                     ),
                   if (event.link.isNotEmpty)
                     CaptionWidget(
-                      text: 'Google Maps',
+                      text: 'Ver Ruta',
                       icon: Icons.map,
                       onPressed: () async => (await canLaunch(event.link).then(
                           (value) async =>
@@ -230,8 +230,8 @@ class __SubmitButtonState extends ConsumerState<_SubmitButton> {
                                     ? '¡Excelente rider! vamos a RODARRR!'
                                     : 'No hay problema nos vemos en la próxima',
                                 body: isEnrolled
-                                    ? 'Te has inscrito al evento ${eventLoaded!.name}.'
-                                    : 'Te has desuscrito del evento ${eventLoaded!.name}.',
+                                    ? 'Te inscribiste a ${eventLoaded!.name}.'
+                                    : 'Te desuscribiste a ${eventLoaded!.name}.',
                                 payload: eventLoaded!.uid,
                               );
 

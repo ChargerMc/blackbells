@@ -33,6 +33,10 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Seleccionar foto de perfil, eventos, establecimientos y beneficios.</string>
+	<key>NSCameraUsageDescription </key>
+	<string>Tomarse una foto para el perfil.</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

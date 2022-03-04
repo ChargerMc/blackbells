@@ -33,7 +33,7 @@ class _CompleteProfileScreenState extends ConsumerState<CompleteProfileScreen> {
                 style: _textTheme.bodyLarge,
               ),
               const Divider(height: 24),
-              const ProfileWidget(),
+              const EditProfileWidget(),
               const SizedBox(height: 50),
             ],
           ),
