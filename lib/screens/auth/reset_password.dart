@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../error/disabled_user_screen.dart';
+
 enum RecoverState { email, code, password }
 
 class ResetPassword extends ConsumerStatefulWidget {
@@ -202,6 +204,15 @@ class _ResetPasswordState extends ConsumerState<ResetPassword> {
                 _email.text.trim(), _code.text.trim(), _password.text.trim())
             .then((value) {
           if (!value) return;
+          final user = ref.read(userProvider);
+          if (user.enabled == false) {
+            _password2.clear();
+            _code.clear();
+            _email.clear();
+            _password.clear();
+            return NavigationService.replaceAnimatedTo(
+                const DisabledUserScreen());
+          }
           TextInput.finishAutofillContext();
           NavigationService.replaceAnimatedTo(const DashboardScreen());
         });
