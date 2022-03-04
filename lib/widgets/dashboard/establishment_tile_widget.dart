@@ -32,10 +32,12 @@ class EstablishmentTileWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white10,
           borderRadius: BorderRadius.circular(18),
-          image: DecorationImage(
-            image: CachedNetworkImageProvider(establishment.img),
-            fit: BoxFit.fitHeight,
-          ),
+          image: establishment.img.isNotEmpty
+              ? DecorationImage(
+                  image: CachedNetworkImageProvider(establishment.img),
+                  fit: BoxFit.fitHeight,
+                )
+              : null,
         ),
         child: Container(
           width: double.infinity,

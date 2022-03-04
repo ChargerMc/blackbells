@@ -16,6 +16,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../helpers/rider.dart';
 import '../../models/user_model.dart';
+import '../../providers/events_provider.dart';
 
 class EventDetails extends StatelessWidget {
   const EventDetails({Key? key, required this.event}) : super(key: key);

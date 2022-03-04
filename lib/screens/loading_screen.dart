@@ -1,4 +1,5 @@
 import 'package:blackbells/providers/backend_provider.dart';
+import 'package:blackbells/screens/profile/complete_profile_screen.dart';
 import 'package:blackbells/services/navigation_service.dart';
 import 'package:blackbells/providers/socket_provider.dart';
 import 'package:blackbells/screens/auth/auth_screen.dart';
@@ -42,6 +43,10 @@ class _LoadingScreenState extends ConsumerState<LoadingScreen> {
         return NavigationService.replaceAnimatedTo(const DisabledUserScreen());
       }
       await socket.connect();
+      if (!backend.checkProfileCompleted()) {
+        return NavigationService.replaceAnimatedTo(
+            const CompleteProfileScreen());
+      }
       return NavigationService.replaceAnimatedTo(const DashboardScreen());
     } else {
       return NavigationService.replaceAnimatedTo(const AuthScreen());

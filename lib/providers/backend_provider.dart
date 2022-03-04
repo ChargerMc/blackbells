@@ -179,6 +179,7 @@ class Backend {
 
       return true;
     } on DioError catch (e) {
+      print(e.error);
       SnackService.showBanner(
         backgroundColor: Colors.redAccent,
         content: e.response != null
@@ -297,6 +298,17 @@ class Backend {
     }
   }
 
+  bool checkProfileCompleted() {
+    final user = read(userProvider);
+
+    if (user.name.isEmpty) return false;
+    if (user.bloodtype.isEmpty) return false;
+    if (user.allergies.isEmpty) return false;
+    if (user.motorcycle.isEmpty) return false;
+    if (user.img.isEmpty) return false;
+    return true;
+  }
+
   Future<void> logout() async {
     read(userProvider.state).state = User.copyWith();
     final socket = read(socketProvider);
@@ -307,33 +319,3 @@ class Backend {
     NavigationService.replaceTo(BlackbellsRoutes.loading);
   }
 }
-
-final eventsProvider = FutureProvider<List<Event>>((_) async {
-  List<Event> events = [];
-  try {
-    final json = await BlackBellsApi.dGet('/events/');
-
-    events = List<Event>.from(
-        (json.data['events'] as List).map((e) => Event.fromJson(e)));
-
-    events.sort(((a, b) => b.start.compareTo(a.start)));
-
-    return events;
-  } on DioError catch (e) {
-    SnackService.showBanner(
-      backgroundColor: Colors.redAccent,
-      content: '${e.response?.data['msg']}',
-      actions: [
-        TextButton(
-          onPressed: () => SnackService.close(),
-          child: const Text(
-            'Cerrar',
-          ),
-        )
-      ],
-      onVisible: () async => await Future.delayed(const Duration(seconds: 3))
-          .whenComplete(() => SnackService.close()),
-    );
-    return events;
-  }
-});

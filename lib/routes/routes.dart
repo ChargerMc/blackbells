@@ -5,7 +5,7 @@ import 'package:blackbells/screens/auth/auth_screen.dart';
 import 'package:blackbells/screens/auth/reset_password.dart';
 import 'package:blackbells/screens/dashboard_screen.dart';
 import 'package:blackbells/screens/loading_screen.dart';
-import 'package:blackbells/screens/profile_screen.dart';
+import 'package:blackbells/screens/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 
 class BlackbellsRoutes {

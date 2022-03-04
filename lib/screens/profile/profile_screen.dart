@@ -2,6 +2,7 @@ import 'package:blackbells/providers/backend_provider.dart';
 import 'package:blackbells/services/dialog_service.dart';
 import 'package:blackbells/services/navigation_service.dart';
 import 'package:blackbells/widgets/custom_button.dart';
+import 'package:blackbells/widgets/profile/profile_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -24,12 +25,14 @@ class ProfileScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            const ProfileWidget(),
             CustomButton(
+              isCancel: true,
               child: const Text('Cerrar sesión'),
               onPressed: () => DialogService.show(
                 title: '¿Cerrar sesión?',
@@ -50,6 +53,7 @@ class ProfileScreen extends ConsumerWidget {
                     : null,
               ),
             ),
+            const SizedBox(height: 50),
           ],
         ),
       ),

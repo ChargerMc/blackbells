@@ -14,18 +14,28 @@ class User {
     required this.gender,
     required this.role,
     required this.uid,
+    required this.cubiccapacity,
+    required this.color,
+    required this.birthday,
+    required this.allergies,
+    required this.motorcycle,
   });
 
-  final String name;
-  final String email;
-  final String bloodtype;
-  final String gender;
+  String name;
+  String email;
+  String bloodtype;
+  String gender;
   final String role;
   bool enabled;
   final bool online;
-  final String phonenumber;
+  String phonenumber;
   final String uid;
-  final String img;
+  String img;
+  String cubiccapacity;
+  String allergies;
+  DateTime birthday;
+  String color;
+  String motorcycle;
 
   static User copyWith({
     String? name,
@@ -38,6 +48,11 @@ class User {
     String? phonenumber,
     String? uid,
     String? img,
+    String? cubiccapacity,
+    String? allergies,
+    String? color,
+    String? motorcycle,
+    DateTime? birthday,
   }) =>
       User(
         name: name ?? '',
@@ -50,6 +65,11 @@ class User {
         online: enabled ?? false,
         phonenumber: phonenumber ?? '',
         img: img ?? '',
+        cubiccapacity: cubiccapacity ?? '',
+        allergies: allergies ?? '',
+        birthday: birthday ?? DateTime.now(),
+        color: color ?? '',
+        motorcycle: motorcycle ?? '',
       );
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -63,6 +83,11 @@ class User {
         online: json["online"],
         img: json["img"],
         phonenumber: json["phonenumber"].toString(),
+        allergies: json["allergies"],
+        birthday: DateTime.parse(json["birthday"]),
+        color: json["color"],
+        cubiccapacity: json["cubiccapacity"],
+        motorcycle: json["motorcycle"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -71,9 +96,16 @@ class User {
         "bloodtype": bloodtype,
         "gender": gender,
         "role": role,
+        "id": uid,
         "enabled": enabled,
-        "phonenumber": phonenumber,
+        "online": online,
         "img": img,
+        "phonenumber": phonenumber,
+        "allergies": allergies,
+        "birthday": birthday.toIso8601String(),
+        "color": color,
+        "cubiccapacity": cubiccapacity,
+        "motorcycle": motorcycle,
       };
 }
 

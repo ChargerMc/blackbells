@@ -3,7 +3,7 @@ import 'package:blackbells/providers/backend_provider.dart';
 import 'package:blackbells/services/navigation_service.dart';
 import 'package:blackbells/providers/push_notification_provider.dart';
 import 'package:blackbells/routes/routes.dart';
-import 'package:blackbells/screens/profile_screen.dart';
+import 'package:blackbells/screens/profile/profile_screen.dart';
 import 'package:blackbells/theme/theme.dart';
 import 'package:blackbells/widgets/dashboard/establishment_tile_widget.dart';
 import 'package:blackbells/widgets/dashboard/custom_title_widget.dart';
@@ -14,6 +14,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 
 import '../providers/establishments_provider.dart';
+import '../providers/events_provider.dart';
 import '../providers/socket_provider.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {

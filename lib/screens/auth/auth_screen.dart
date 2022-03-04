@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../profile/complete_profile_screen.dart';
+
 class AuthScreen extends ConsumerStatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);
 
@@ -171,6 +173,10 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
         return NavigationService.replaceAnimatedTo(const DisabledUserScreen());
       }
       await ref.read(socketProvider).connect();
+      if (!backend.checkProfileCompleted()) {
+        return NavigationService.replaceAnimatedTo(
+            const CompleteProfileScreen());
+      }
       NavigationService.replaceAnimatedTo(const DashboardScreen());
       _password2.clear();
       _phonenumber.clear();
