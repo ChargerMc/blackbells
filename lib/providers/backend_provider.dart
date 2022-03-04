@@ -180,7 +180,6 @@ class Backend {
 
       return true;
     } on DioError catch (e) {
-      print(e.error);
       SnackService.showBanner(
         backgroundColor: Colors.redAccent,
         content: e.response != null

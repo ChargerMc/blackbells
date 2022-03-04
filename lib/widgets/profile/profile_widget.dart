@@ -275,13 +275,16 @@ class _ProfileWidgetState extends ConsumerState<EditProfileWidget> {
           ),
           FadeInLeft(
             delay: const Duration(milliseconds: 500),
-            child: RawMaterialButton(
-              onPressed: _isEnabled ? () => _selectDate(context) : null,
-              child: Container(
-                margin: const EdgeInsets.only(top: 8),
-                padding: const EdgeInsets.all(14),
-                alignment: Alignment.centerLeft,
-                height: 70,
+            child: Container(
+              margin: const EdgeInsets.only(top: 8),
+              padding: const EdgeInsets.all(14),
+              alignment: Alignment.centerLeft,
+              height: 70,
+              child: RawMaterialButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18),
+                ),
+                onPressed: _isEnabled ? () => _selectDate(context) : null,
                 child: Row(
                   children: [
                     const Icon(
@@ -295,10 +298,10 @@ class _ProfileWidgetState extends ConsumerState<EditProfileWidget> {
                     ),
                   ],
                 ),
-                decoration: BoxDecoration(
-                  color: Colors.white10,
-                  borderRadius: BorderRadius.circular(18),
-                ),
+              ),
+              decoration: BoxDecoration(
+                color: Colors.white10,
+                borderRadius: BorderRadius.circular(18),
               ),
             ),
           ),
