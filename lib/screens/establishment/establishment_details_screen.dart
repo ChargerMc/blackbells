@@ -68,7 +68,7 @@ class EstablishmentDetails extends ConsumerWidget {
                     ),
                   if (establishment.gmaplink.isNotEmpty)
                     CaptionWidget(
-                      text: 'Ver Ubicación',
+                      text: 'Ver ubicación',
                       icon: Icons.map_rounded,
                       onPressed: () async =>
                           (await canLaunch(establishment.gmaplink).then(

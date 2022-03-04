@@ -31,4 +31,23 @@ class DialogService {
       ),
     );
   }
+
+  static void showBottomPage(
+    Widget child, {
+    Color? backgroundColor,
+    bool? enableDrag,
+    bool isDismissible = true,
+    bool isScrollControlled = false,
+  }) async {
+    showModalBottomSheet(
+      context: _context,
+      builder: (context) => child,
+      isDismissible: isDismissible,
+      isScrollControlled: isScrollControlled,
+      backgroundColor: backgroundColor,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(18), topRight: Radius.circular(18))),
+    );
+  }
 }

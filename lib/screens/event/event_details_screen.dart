@@ -97,7 +97,7 @@ class EventDetails extends StatelessWidget {
                     ),
                   if (event.link.isNotEmpty)
                     CaptionWidget(
-                      text: 'Ver Ruta',
+                      text: 'Ver ruta',
                       icon: Icons.map,
                       onPressed: () async => (await canLaunch(event.link).then(
                           (value) async =>
@@ -160,6 +160,8 @@ class __SubmitButtonState extends ConsumerState<_SubmitButton> {
   Widget build(BuildContext context) {
     final backend = ref.watch(backendProvider);
     final user = ref.watch(userProvider);
+    final _textTheme = Theme.of(context).textTheme;
+    final size = MediaQuery.of(context).size;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
@@ -167,14 +169,61 @@ class __SubmitButtonState extends ConsumerState<_SubmitButton> {
         mainAxisSize: MainAxisSize.max,
         children: [
           eventLoaded!.enrolled.isNotEmpty
-              ? ImageStack.providers(
-                  providers: imgs,
-                  showTotalCount: false,
-                  imageCount: 3,
-                  imageBorderColor: blackbellsColor,
-                  imageBorderWidth: 4,
-                  imageRadius: 40,
-                  totalCount: eventLoaded!.enrolled.length,
+              ? GestureDetector(
+                  onTap: () => DialogService.showBottomPage(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 24, vertical: 14),
+                          child: Text(
+                            'Riders inscritos. (${widget.event.enrolled.length})',
+                            style: _textTheme.titleLarge,
+                          ),
+                        ),
+                        const Divider(),
+                        SizedBox(
+                          height: size.height * 0.5,
+                          child: ListView.builder(
+                            itemCount: widget.event.enrolled.length,
+                            itemBuilder: (context, index) {
+                              final rider = widget.event.enrolled[index];
+                              return ListTile(
+                                leading: ClipOval(
+                                  child: CachedNetworkImage(
+                                    imageUrl: rider.img,
+                                    width: 50,
+                                    height: 50,
+                                    fit: BoxFit.cover,
+                                    placeholder: (_, __) => const ShimmerEffect(
+                                      width: 50,
+                                      height: 50,
+                                    ),
+                                  ),
+                                ),
+                                title: Text(
+                                  rider.name ?? 'Anónimo',
+                                  style: _textTheme.titleMedium,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    isScrollControlled: true,
+                  ),
+                  child: ImageStack.providers(
+                    providers: imgs,
+                    showTotalCount: false,
+                    imageCount: 3,
+                    imageBorderColor: blackbellsColor,
+                    imageBorderWidth: 4,
+                    imageRadius: 40,
+                    totalCount: eventLoaded!.enrolled.length,
+                  ),
                 )
               : const SizedBox(),
           const SizedBox(width: 8),

@@ -217,10 +217,12 @@ class _ProfileWidgetState extends ConsumerState<EditProfileWidget> {
                       ),
                     )
                     .toList(),
-                onChanged: (val) => setState(() {
-                  _user.bloodtype = val!;
-                  _isEdited = true;
-                }),
+                onChanged: _isEnabled
+                    ? (val) => setState(() {
+                          _user.bloodtype = val!;
+                          _isEdited = true;
+                        })
+                    : null,
                 decoration: CustomInputDecoration.form(
                     hintText: 'Tipo de sangre',
                     prefixIcon: const Icon(Icons.bloodtype_rounded)),
@@ -256,15 +258,17 @@ class _ProfileWidgetState extends ConsumerState<EditProfileWidget> {
                     Text('Mujer'),
                   ],
                   isSelected: _selections,
-                  onPressed: (index) {
-                    setState(() {
-                      for (int i = 0; i < _selections.length; i++) {
-                        _selections[i] = i == index;
-                      }
-                      _user.gender = index == 0 ? 'MALE' : 'FEMALE';
-                      _isEdited = true;
-                    });
-                  },
+                  onPressed: _isEnabled
+                      ? (index) {
+                          setState(() {
+                            for (int i = 0; i < _selections.length; i++) {
+                              _selections[i] = i == index;
+                            }
+                            _user.gender = index == 0 ? 'MALE' : 'FEMALE';
+                            _isEdited = true;
+                          });
+                        }
+                      : null,
                 );
               },
             ),
@@ -272,7 +276,7 @@ class _ProfileWidgetState extends ConsumerState<EditProfileWidget> {
           FadeInLeft(
             delay: const Duration(milliseconds: 500),
             child: RawMaterialButton(
-              onPressed: () => _selectDate(context),
+              onPressed: _isEnabled ? () => _selectDate(context) : null,
               child: Container(
                 margin: const EdgeInsets.only(top: 8),
                 padding: const EdgeInsets.all(14),
@@ -341,6 +345,11 @@ class _ProfileWidgetState extends ConsumerState<EditProfileWidget> {
               _user.color = val;
               _isEdited = true;
             }),
+            onEditingComplete: _isEnabled &&
+                    _isEdited &&
+                    backend.checkProfileCompleted(image: _image)
+                ? () => _submit()
+                : null,
           ),
           CustomButton(
             padding: const EdgeInsets.only(top: 18),
