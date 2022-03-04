@@ -21,7 +21,7 @@ class SocketService {
     final token = await SecureStorage.getToken();
 
     _client = IO.io(
-        Environment().config.socketURL,
+        Environment.config.socketURL,
         IO.OptionBuilder()
             .setTransports(['websocket'])
             .enableForceNew()

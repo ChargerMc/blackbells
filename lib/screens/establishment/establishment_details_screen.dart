@@ -1,5 +1,4 @@
 import 'package:blackbells/models/establishment_model.dart';
-import 'package:blackbells/providers/backend_provider.dart';
 import 'package:blackbells/screens/image_view.dart';
 import 'package:blackbells/services/dialog_service.dart';
 import 'package:blackbells/services/navigation_service.dart';
@@ -10,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../providers/benefits_provider.dart';
 import '../../widgets/shimmer.dart';
 
 class EstablishmentDetails extends ConsumerWidget {

@@ -1,6 +1,4 @@
-import 'package:blackbells/global/environment.dart';
-import 'package:blackbells/models/benefits_model.dart';
-import 'package:blackbells/models/establishment_model.dart';
+import 'package:blackbells/global/blackbells_api.dart';
 import 'package:blackbells/models/event_model.dart';
 import 'package:blackbells/models/user_model.dart';
 import 'package:blackbells/services/navigation_service.dart';
@@ -17,7 +15,6 @@ enum Authenticated { logged, invalid, error, waiting }
 final userProvider = StateProvider<User>((_) => User.copyWith());
 
 final backendProvider = Provider<Backend>((ref) => Backend(ref.read));
-final _dio = Dio();
 
 class Backend {
   Backend(this.read);
@@ -30,9 +27,9 @@ class Backend {
     };
 
     try {
-      final json = await _dio.post('/auth/login', data: data);
+      final json = await BlackBellsApi.dPost('/auth/login', data: data);
       await SecureStorage.saveToken(json.data['token']);
-      _dio.options.headers = {'x-token': json.data['token']};
+      await BlackBellsApi.init();
       read(userProvider.state).state = User.fromJson(json.data['user']);
       return true;
     } on DioError catch (e) {
@@ -62,7 +59,7 @@ class Backend {
     };
 
     try {
-      await _dio.post('/users/', data: data);
+      await BlackBellsApi.dPost('/users/', data: data);
 
       return true;
     } on DioError catch (e) {
@@ -103,12 +100,7 @@ class Backend {
 
   Future<Authenticated> authenticate() async {
     try {
-      _dio.options.headers = {'x-token': await SecureStorage.getToken()};
-      _dio.options.baseUrl = Environment().config.baseURL;
-      _dio.options.connectTimeout = 60 * 1000;
-      _dio.options.receiveTimeout = 60 * 1000;
-
-      final json = await _dio.get('/auth/');
+      final json = await BlackBellsApi.dGet('/auth/');
       await SecureStorage.saveToken(json.data['token']);
       read(userProvider.state).state = User.fromJson(json.data['user']);
       return Authenticated.logged;
@@ -159,7 +151,7 @@ class Backend {
 
   Future<bool> sendPushNotification(String title, {String? body}) async {
     try {
-      final json = await _dio.post('/notifications/notifications',
+      final json = await BlackBellsApi.dPost('/notifications/notifications',
           data: {'title': title, 'body': body});
 
       if (json.statusCode == 200) {
@@ -177,9 +169,10 @@ class Backend {
       Response json;
 
       if (delete) {
-        json = await _dio.delete('/users/${user.uid}');
+        json = await BlackBellsApi.dDelete('/users/${user.uid}');
       } else {
-        json = await _dio.put('/users/${user.uid}', data: user.toJson());
+        json =
+            await BlackBellsApi.dPut('/users/${user.uid}', data: user.toJson());
       }
 
       if (json.statusCode != 200) return false;
@@ -208,7 +201,7 @@ class Backend {
 
   Future<bool> modifyEvent(Event event, {bool? enroll}) async {
     try {
-      await _dio.put(
+      await BlackBellsApi.dPut(
         '/events/${event.uid}/?${enroll != null ? 'enroll=$enroll' : ''}',
         data: event.toJson(),
       );
@@ -236,7 +229,7 @@ class Backend {
 
   Future<bool> resetPassword(String email) async {
     try {
-      await _dio.post('/auth/resetpassword', data: {'email': email});
+      await BlackBellsApi.dPost('/auth/resetpassword', data: {'email': email});
       return true;
     } on DioError catch (e) {
       SnackService.showBanner(
@@ -258,7 +251,7 @@ class Backend {
 
   Future<bool> validateCode(String email, String code) async {
     try {
-      await _dio.post('/auth/resetpassword/code',
+      await BlackBellsApi.dPost('/auth/resetpassword/code',
           data: {'email': email, 'code': code});
       return true;
     } on DioError catch (e) {
@@ -282,7 +275,7 @@ class Backend {
   Future<bool> changePassword(
       String email, String code, String password) async {
     try {
-      await _dio.post('/auth/resetpassword/password',
+      await BlackBellsApi.dPost('/auth/resetpassword/password',
           data: {'email': email, 'code': code, 'password': password});
       await login(email, password);
       return true;
@@ -318,7 +311,7 @@ class Backend {
 final eventsProvider = FutureProvider<List<Event>>((_) async {
   List<Event> events = [];
   try {
-    final json = await _dio.get('/events/');
+    final json = await BlackBellsApi.dGet('/events/');
 
     events = List<Event>.from(
         (json.data['events'] as List).map((e) => Event.fromJson(e)));
@@ -342,89 +335,5 @@ final eventsProvider = FutureProvider<List<Event>>((_) async {
           .whenComplete(() => SnackService.close()),
     );
     return events;
-  }
-});
-
-final establishmentProvider = FutureProvider<List<Establishment>>((_) async {
-  List<Establishment> establishments = [];
-  try {
-    final json = await _dio.get('/establishments/');
-    establishments = List<Establishment>.from(
-        (json.data['establishments'] as List)
-            .map((e) => Establishment.fromJson(e)));
-    return establishments;
-  } on DioError catch (e) {
-    SnackService.showBanner(
-      backgroundColor: Colors.redAccent,
-      content: '${e.response?.data['msg']}',
-      actions: [
-        TextButton(
-          onPressed: () => SnackService.close(),
-          child: const Text(
-            'Cerrar',
-          ),
-        )
-      ],
-      onVisible: () async => await Future.delayed(const Duration(seconds: 3))
-          .whenComplete(() => SnackService.close()),
-    );
-    return establishments;
-  }
-});
-
-final usersProvider = FutureProvider<List<User>>((_) async {
-  List<User> users = [];
-  try {
-    final json = await _dio.get('/users/');
-
-    users = List<User>.from(
-        (json.data['users'] as List).map((e) => User.fromJson(e)));
-
-    users.removeWhere((user) => user.role == 'ADMIN_ROLE');
-
-    return users;
-  } on DioError catch (e) {
-    SnackService.showBanner(
-      backgroundColor: Colors.redAccent,
-      content: '${e.response?.data['msg']}',
-      actions: [
-        TextButton(
-          onPressed: () => SnackService.close(),
-          child: const Text(
-            'Cerrar',
-          ),
-        )
-      ],
-      onVisible: () async => await Future.delayed(const Duration(seconds: 3))
-          .whenComplete(() => SnackService.close()),
-    );
-    return users;
-  }
-});
-
-final benefitsProvider =
-    FutureProvider.family<List<Benefit>, String>((_, uid) async {
-  List<Benefit> benefits = [];
-  try {
-    final json = await _dio.get('/benefits/establishment/$uid');
-    benefits = List<Benefit>.from(
-        (json.data['benefits'] as List).map((e) => Benefit.fromJson(e)));
-    return benefits;
-  } on DioError catch (e) {
-    SnackService.showBanner(
-      backgroundColor: Colors.redAccent,
-      content: '${e.response?.data['msg']}',
-      actions: [
-        TextButton(
-          onPressed: () => SnackService.close(),
-          child: const Text(
-            'Cerrar',
-          ),
-        )
-      ],
-      onVisible: () async => await Future.delayed(const Duration(seconds: 3))
-          .whenComplete(() => SnackService.close()),
-    );
-    return benefits;
   }
 });

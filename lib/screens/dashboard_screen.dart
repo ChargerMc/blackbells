@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 
+import '../providers/establishments_provider.dart';
 import '../providers/socket_provider.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
@@ -177,7 +178,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                         loading: () {
                           return FadeInRight(
                             child: ShimmerEffect(
-                              height: size.height * 0.2,
+                              height: size.width * 0.35,
                               margin: const EdgeInsets.symmetric(
                                 horizontal: 8,
                                 vertical: 14,

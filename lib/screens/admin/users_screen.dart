@@ -3,6 +3,8 @@ import 'package:blackbells/widgets/custom_circular_progress.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../providers/users_provider.dart';
+
 class UsersScreen extends ConsumerStatefulWidget {
   const UsersScreen({Key? key}) : super(key: key);
 

@@ -1,3 +1,4 @@
+import 'package:blackbells/global/blackbells_api.dart';
 import 'package:blackbells/services/notification_service.dart';
 import 'package:blackbells/providers/secure_storage_provider.dart';
 import 'package:blackbells/routes/routes.dart';
@@ -11,9 +12,10 @@ import 'services/navigation_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SecureStorage.configurePrefs();
-  Environment().initConfig(
+  Environment.init(
       const String.fromEnvironment('ENV', defaultValue: Environment.prod));
+  SecureStorage.configurePrefs();
+  await BlackBellsApi.init();
   NotificationService.init();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
