@@ -6,8 +6,8 @@ class Event {
     required this.user,
     required this.name,
     required this.desc,
-    this.img,
-    this.link,
+    required this.img,
+    required this.link,
     required this.start,
     this.end,
     required this.sponsors,
@@ -18,8 +18,8 @@ class Event {
   final UserResumed user;
   final String name;
   final String desc;
-  final String? img;
-  final String? link;
+  final String img;
+  final String link;
   final DateTime start;
   final DateTime? end;
   final List<Establishment> sponsors;
@@ -58,7 +58,9 @@ class Event {
       img: json["img"],
       link: json["link"],
       start: DateTime.parse(json["start"].toString()),
-      end: DateTime.tryParse(json["end"].toString()),
+      end: json["end"] != null
+          ? DateTime.tryParse(json["end"].toString())
+          : null,
       sponsors: List<Establishment>.from(
           json["sponsors"].map((x) => Establishment.fromJson(x))),
       uid: json["uid"],

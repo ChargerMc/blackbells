@@ -12,11 +12,8 @@ import 'services/navigation_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SecureStorage.configurePrefs();
-  String environment = const String.fromEnvironment(
-    'ENV',
-    defaultValue: Environment.prod,
-  );
-  Environment().initConfig(environment);
+  Environment().initConfig(
+      const String.fromEnvironment('ENV', defaultValue: Environment.prod));
   NotificationService.init();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

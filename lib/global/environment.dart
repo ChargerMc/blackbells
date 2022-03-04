@@ -5,10 +5,10 @@ abstract class BaseConfig {
 
 class DevConfig implements BaseConfig {
   @override
-  String get baseURL => "http://192.168.100.228:8000/api";
+  String get baseURL => "http://192.168.231.1:8000/api";
 
   @override
-  String get socketURL => "http://192.168.100.228:8000/";
+  String get socketURL => "http://192.168.231.1:8000/";
 }
 
 class ProdConfig implements BaseConfig {

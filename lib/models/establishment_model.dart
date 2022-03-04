@@ -1,27 +1,24 @@
-import 'package:blackbells/models/benefits_model.dart';
 import 'package:blackbells/models/user_model.dart';
 
 class Establishment {
   Establishment({
     required this.owner,
     required this.name,
-    this.desc,
-    this.link,
-    required this.benefits,
-    this.address,
-    this.gmaplink,
+    required this.desc,
+    required this.link,
+    required this.address,
+    required this.gmaplink,
     required this.img,
     required this.uid,
   });
 
   final UserResumed owner;
   final String name;
-  final String? desc;
-  final String? link;
-  final String? address;
-  final String? gmaplink;
+  final String desc;
+  final String link;
+  final String address;
+  final String gmaplink;
   final String img;
-  final List<Benefit> benefits;
   final String uid;
 
   Establishment copyWith({
@@ -34,7 +31,6 @@ class Establishment {
     String? gmaplink,
     DateTime? start,
     DateTime? end,
-    List<Benefit>? benefits,
     String? uid,
   }) =>
       Establishment(
@@ -44,7 +40,6 @@ class Establishment {
         img: img ?? this.img,
         link: link ?? this.link,
         address: address ?? this.address,
-        benefits: benefits ?? this.benefits,
         gmaplink: gmaplink ?? this.gmaplink,
         uid: uid ?? this.uid,
       );
@@ -52,8 +47,6 @@ class Establishment {
   factory Establishment.fromJson(Map<String, dynamic> json) => Establishment(
         owner: UserResumed.fromJson(json["owner"]),
         address: json["address"],
-        benefits: List<Benefit>.from(
-            (json['benefits'] as List).map((e) => Benefit.fromJson(e))),
         gmaplink: json["gmaplink"],
         name: json["name"],
         desc: json["desc"],
@@ -70,7 +63,6 @@ class Establishment {
         "desc": desc,
         "img": img,
         "link": link,
-        "benefits": List<Benefit>.from(benefits.map((x) => x)),
         "uid": uid,
       };
 }

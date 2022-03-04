@@ -34,11 +34,13 @@ class EventTileWidget extends StatelessWidget {
           color: Colors.white10,
           borderRadius: BorderRadius.circular(18),
           image: DecorationImage(
-            opacity: event.img != null ? 1 : 0.2,
+            opacity: event.img.isNotEmpty ? 1 : 0.2,
             image: CachedNetworkImageProvider(
-              event.img ?? 'https://app.blackbells.com.ec/uploads/no-image.png',
+              event.img.isNotEmpty
+                  ? event.img
+                  : 'https://app.blackbells.com.ec/uploads/no-image.png',
             ),
-            fit: event.img != null ? BoxFit.cover : BoxFit.fitWidth,
+            fit: event.img.isNotEmpty ? BoxFit.cover : BoxFit.fitWidth,
           ),
         ),
         child: Container(
@@ -67,10 +69,11 @@ class EventTileWidget extends StatelessWidget {
                               '${event.start.day}/${event.start.month}/${event.start.year}',
                           icon: Icons.calendar_today,
                         ),
-                        CaptionWidget(
-                          text: Rider.getRouteTime(event.start, event.end),
-                          icon: Icons.two_wheeler,
-                        ),
+                        if (event.end != null)
+                          CaptionWidget(
+                            text: Rider.getRouteTime(event.start, event.end),
+                            icon: Icons.two_wheeler,
+                          ),
                       ],
                     ),
                   ],

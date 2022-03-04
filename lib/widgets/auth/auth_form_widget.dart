@@ -1,4 +1,6 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:blackbells/routes/routes.dart';
+import 'package:blackbells/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 
@@ -81,7 +83,7 @@ class AuthFormWidget extends StatelessWidget {
             autofillHints: const [AutofillHints.email],
             controller: email,
             prefixIcon: const Icon(Icons.email),
-            hintText: 'Email',
+            hintText: 'Correo electrónico',
             keyboardType: TextInputType.emailAddress,
             padding: const EdgeInsets.only(bottom: 8),
             textInputAction: TextInputAction.next,
@@ -106,6 +108,27 @@ class AuthFormWidget extends StatelessWidget {
                   ),
                   onPressed: onPressed),
               onEditingComplete: onEditingComplete),
+          FadeInLeft(
+            delay: const Duration(milliseconds: 800),
+            child: TextButton(
+              onPressed: isEnabled
+                  ? () => NavigationService.navigateTo(
+                      BlackbellsRoutes.passwordReset)
+                  : null,
+              child: const Text.rich(
+                TextSpan(
+                  text: '¿Olvidaste tu contraseña?',
+                  style: TextStyle(color: Colors.white54),
+                  children: [
+                    TextSpan(
+                      text: '  Resetear',
+                      style: TextStyle(color: Colors.white),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
         ],
       );
 

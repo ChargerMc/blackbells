@@ -16,7 +16,7 @@ class ProfileScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text(user.name ?? 'No name'),
+        title: Text(user.name),
         actions: [
           IconButton(
             onPressed: () => Navigator.pop(context),

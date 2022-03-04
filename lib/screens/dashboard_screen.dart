@@ -43,7 +43,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     final events = ref.watch(eventsProvider);
     final establishments = ref.watch(establishmentProvider);
 
-    final width = MediaQuery.of(context).size.width;
+    final size = MediaQuery.of(context).size;
 
     return SafeArea(
       child: Scaffold(
@@ -59,7 +59,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 flexibleSpace: FadeInLeft(
                   duration: const Duration(milliseconds: 800),
                   child: CustomTitle(
-                    title: 'Rodadas/Eventos.',
+                    title: 'Rodadas.',
                     subtitle: 'Chequea nuestros siguientes eventos.',
                     padding: const EdgeInsets.all(14),
                     onPressed: () => NavigationService.navigateToSlideLeft(
@@ -71,7 +71,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               SliverToBoxAdapter(
                 child: ConstrainedBox(
                   constraints: BoxConstraints(
-                    maxHeight: width * 0.6,
+                    maxHeight: size.width * 0.6,
                   ),
                   child: Center(
                     child: events.when(
@@ -82,7 +82,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                               children: [
                                 LottieBuilder.asset(
                                   'assets/lotties/sad-skull.json',
-                                  height: width * 0.4,
+                                  height: size.width * 0.4,
                                 ),
                                 const SizedBox(height: 4),
                                 const Text(
@@ -116,7 +116,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                       loading: () {
                         return FadeInRight(
                           child: ShimmerEffect(
-                            width: width * 0.8,
+                            width: size.width * 0.8,
                             margin: const EdgeInsets.symmetric(
                               horizontal: 24,
                               vertical: 14,
@@ -154,7 +154,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                                 child: Padding(
                                   padding: EdgeInsets.all(14.0),
                                   child: Text(
-                                    'No existen establecimientos registrados :(',
+                                    'No existen establecimientos registrados.',
                                     style: TextStyle(
                                       fontSize: 18,
                                       color: Colors.white54,
@@ -177,8 +177,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                         loading: () {
                           return FadeInRight(
                             child: ShimmerEffect(
-                              width: width * 0.8,
-                              height: width * 0.4,
+                              height: size.height * 0.2,
                               margin: const EdgeInsets.symmetric(
                                 horizontal: 8,
                                 vertical: 14,

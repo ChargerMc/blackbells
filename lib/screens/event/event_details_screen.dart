@@ -42,7 +42,7 @@ class EventDetails extends StatelessWidget {
                   children: [
                     CachedNetworkImage(
                       alignment: Alignment.center,
-                      imageUrl: event.img ?? '',
+                      imageUrl: event.img,
                       fit: BoxFit.cover,
                       height: size.height * 0.3,
                       width: size.width,
@@ -59,12 +59,12 @@ class EventDetails extends StatelessWidget {
                       child: Material(
                         color: Colors.transparent,
                         child: InkWell(
-                          onTap: event.img != null
+                          onTap: event.img.isNotEmpty
                               ? () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => ImageView(
-                                        imageUrl: event.img!,
+                                        imageUrl: event.img,
                                       ),
                                     ),
                                   )
@@ -89,21 +89,18 @@ class EventDetails extends StatelessWidget {
                         '${event.start.day}/${event.start.month}/${event.start.year}',
                     icon: Icons.calendar_today,
                   ),
-                  CaptionWidget(
-                    text: Rider.getRouteTime(event.start, event.end),
-                    icon: Icons.two_wheeler,
-                  ),
-                  if (event.link != null)
+                  if (event.end != null)
+                    CaptionWidget(
+                      text: Rider.getRouteTime(event.start, event.end),
+                      icon: Icons.two_wheeler,
+                    ),
+                  if (event.link.isNotEmpty)
                     CaptionWidget(
                       text: 'Google Maps',
                       icon: Icons.map,
-                      onPressed: () async {
-                        final can = await canLaunch(event.link!);
-
-                        if (can) {
-                          await launch(event.link!);
-                        }
-                      },
+                      onPressed: () async => (await canLaunch(event.link).then(
+                          (value) async =>
+                              (value) ? await launch(event.link) : null)),
                     ),
                 ],
               ),
@@ -164,7 +161,7 @@ class __SubmitButtonState extends ConsumerState<_SubmitButton> {
     final user = ref.watch(userProvider);
 
     return Padding(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: [

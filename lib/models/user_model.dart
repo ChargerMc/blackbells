@@ -8,7 +8,7 @@ class User {
     required this.enabled,
     required this.online,
     required this.phonenumber,
-    this.name,
+    required this.name,
     required this.email,
     required this.bloodtype,
     required this.gender,
@@ -16,9 +16,9 @@ class User {
     required this.uid,
   });
 
-  final String? name;
+  final String name;
   final String email;
-  final String? bloodtype;
+  final String bloodtype;
   final String gender;
   final String role;
   bool enabled;
@@ -53,9 +53,9 @@ class User {
       );
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-        name: json["name"],
+        name: json["name"] ?? '',
         email: json["email"],
-        bloodtype: json["bloodtype"],
+        bloodtype: json["bloodtype"] ?? '',
         gender: json["gender"],
         role: json["role"],
         uid: json["uid"],

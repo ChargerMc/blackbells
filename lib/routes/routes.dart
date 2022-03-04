@@ -1,7 +1,8 @@
 import 'package:blackbells/screens/admin/admin_screen.dart';
 import 'package:blackbells/screens/admin/notification_screen.dart';
 import 'package:blackbells/screens/admin/users_screen.dart';
-import 'package:blackbells/screens/auth_screen.dart';
+import 'package:blackbells/screens/auth/auth_screen.dart';
+import 'package:blackbells/screens/auth/reset_password.dart';
 import 'package:blackbells/screens/dashboard_screen.dart';
 import 'package:blackbells/screens/loading_screen.dart';
 import 'package:blackbells/screens/profile_screen.dart';
@@ -15,6 +16,7 @@ class BlackbellsRoutes {
   static const String admin = 'admin';
   static const String users = 'users';
   static const String sendNotification = 'sendNotification';
+  static const String passwordReset = 'passwordReset';
 
   static final Map<String, Widget Function(BuildContext)> routes = {
     loading: (_) => const LoadingScreen(),
@@ -24,5 +26,6 @@ class BlackbellsRoutes {
     admin: (_) => const AdminScreen(),
     users: (_) => const UsersScreen(),
     sendNotification: (_) => const NotificationScreen(),
+    passwordReset: (_) => const ResetPassword(),
   };
 }

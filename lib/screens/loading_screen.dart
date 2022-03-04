@@ -1,7 +1,7 @@
 import 'package:blackbells/providers/backend_provider.dart';
 import 'package:blackbells/services/navigation_service.dart';
 import 'package:blackbells/providers/socket_provider.dart';
-import 'package:blackbells/screens/auth_screen.dart';
+import 'package:blackbells/screens/auth/auth_screen.dart';
 import 'package:blackbells/screens/dashboard_screen.dart';
 import 'package:blackbells/screens/error/disabled_user_screen.dart';
 import 'package:blackbells/theme/theme.dart';

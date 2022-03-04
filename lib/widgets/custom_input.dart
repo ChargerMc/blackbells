@@ -22,6 +22,7 @@ class CustomInput extends StatelessWidget {
     this.delay = const Duration(milliseconds: 0),
     this.validator,
     this.maxLines = 1,
+    this.maxLength,
   }) : super(key: key);
 
   final TextInputAction? textInputAction;
@@ -41,7 +42,7 @@ class CustomInput extends StatelessWidget {
   final Duration delay;
   final String? Function(String? text)? validator;
   final int? maxLines;
-
+  final int? maxLength;
   @override
   Widget build(BuildContext context) {
     return FadeInLeft(
@@ -50,6 +51,7 @@ class CustomInput extends StatelessWidget {
       child: Padding(
         padding: padding,
         child: TextFormField(
+          maxLength: maxLength,
           maxLines: maxLines,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: validator,

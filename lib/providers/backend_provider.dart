@@ -1,4 +1,5 @@
 import 'package:blackbells/global/environment.dart';
+import 'package:blackbells/models/benefits_model.dart';
 import 'package:blackbells/models/establishment_model.dart';
 import 'package:blackbells/models/event_model.dart';
 import 'package:blackbells/models/user_model.dart';
@@ -233,6 +234,76 @@ class Backend {
     }
   }
 
+  Future<bool> resetPassword(String email) async {
+    try {
+      await _dio.post('/auth/resetpassword', data: {'email': email});
+      return true;
+    } on DioError catch (e) {
+      SnackService.showBanner(
+        backgroundColor: Colors.redAccent,
+        content: e.response!.statusCode != 404
+            ? e.response!.data['msg']
+            : 'No hay conexión con el servidor.',
+        actions: [
+          TextButton(
+              onPressed: () => SnackService.close(),
+              child: const Text('Cerrar'))
+        ],
+        onVisible: () async => await Future.delayed(const Duration(seconds: 3))
+            .whenComplete(() => SnackService.close()),
+      );
+      return false;
+    }
+  }
+
+  Future<bool> validateCode(String email, String code) async {
+    try {
+      await _dio.post('/auth/resetpassword/code',
+          data: {'email': email, 'code': code});
+      return true;
+    } on DioError catch (e) {
+      SnackService.showBanner(
+        backgroundColor: Colors.redAccent,
+        content: e.response!.statusCode != 404
+            ? e.response!.data['msg']
+            : 'No hay conexión con el servidor.',
+        actions: [
+          TextButton(
+              onPressed: () => SnackService.close(),
+              child: const Text('Cerrar'))
+        ],
+        onVisible: () async => await Future.delayed(const Duration(seconds: 3))
+            .whenComplete(() => SnackService.close()),
+      );
+      return false;
+    }
+  }
+
+  Future<bool> changePassword(
+      String email, String code, String password) async {
+    try {
+      await _dio.post('/auth/resetpassword/password',
+          data: {'email': email, 'code': code, 'password': password});
+      await login(email, password);
+      return true;
+    } on DioError catch (e) {
+      SnackService.showBanner(
+        backgroundColor: Colors.redAccent,
+        content: e.response!.statusCode != 404
+            ? e.response!.data['msg']
+            : 'No hay conexión con el servidor.',
+        actions: [
+          TextButton(
+              onPressed: () => SnackService.close(),
+              child: const Text('Cerrar'))
+        ],
+        onVisible: () async => await Future.delayed(const Duration(seconds: 3))
+            .whenComplete(() => SnackService.close()),
+      );
+      return false;
+    }
+  }
+
   Future<void> logout() async {
     read(userProvider.state).state = User.copyWith();
     final socket = read(socketProvider);
@@ -328,5 +399,32 @@ final usersProvider = FutureProvider<List<User>>((_) async {
           .whenComplete(() => SnackService.close()),
     );
     return users;
+  }
+});
+
+final benefitsProvider =
+    FutureProvider.family<List<Benefit>, String>((_, uid) async {
+  List<Benefit> benefits = [];
+  try {
+    final json = await _dio.get('/benefits/establishment/$uid');
+    benefits = List<Benefit>.from(
+        (json.data['benefits'] as List).map((e) => Benefit.fromJson(e)));
+    return benefits;
+  } on DioError catch (e) {
+    SnackService.showBanner(
+      backgroundColor: Colors.redAccent,
+      content: '${e.response?.data['msg']}',
+      actions: [
+        TextButton(
+          onPressed: () => SnackService.close(),
+          child: const Text(
+            'Cerrar',
+          ),
+        )
+      ],
+      onVisible: () async => await Future.delayed(const Duration(seconds: 3))
+          .whenComplete(() => SnackService.close()),
+    );
+    return benefits;
   }
 });
